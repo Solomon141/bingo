@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import WebApp from "@twa-dev/sdk";
 
 function App() {
   const [userData, setUserData] = useState([]);
