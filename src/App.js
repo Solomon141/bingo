@@ -1,61 +1,37 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import WebApp from "@twa-dev/sdk";
+import React, { useEffect, useState } from 'react';
 
 function App() {
-  const [userData, setUserData] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
-      setUserData(WebApp.initDataUnsafe.user);
+    if (window.Telegram.WebApp) {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+      setUser(tg.initDataUnsafe.user);
     }
   }, []);
 
-  // const [posts, setPosts] = useState([]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get("https://jsonplaceholder.typicode.com/posts")
-  //     .then((res) => {
-  //       setPosts(res.data);
-  //       console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   return (
-    <div className="App">
-      <div>Bingo APP</div>
-
-      {/* <ul>
-        {posts.length > 0 &&
-          posts.map((post) => {
-            return <li key={post.id}>{post.title}</li>;
-          })}
-        <li></li>
-      </ul> */}
-      {userData ? (
-        <>
-          <h1>User Data</h1>
-          <ul>
-            <li> {userData.id} </li>
-            <li> {userData.first_name} </li>
-            <li> {userData.last_name} </li>
-            <li> {userData.username} </li>
-            <li> {userData.language_code} </li>
-            <li>
-              {userData.is_premium ? "Premium Account" : "Ordinary Account"}
-            </li>
-          </ul>
-        </>
+    <div>
+      <h1>Welcome to Telegram Mini App</h1>
+      {user ? (
+        <div>
+          <p>
+            <strong>User ID:</strong> {user.id}
+          </p>
+          <p>
+            <strong>First Name:</strong> {user.first_name}
+          </p>
+          <p>
+            <strong>Last Name:</strong> {user.last_name}
+          </p>
+          <p>
+            <strong>Username:</strong> {user.username}
+          </p>
+          <img src={user.photo_url} alt="User profile" />
+        </div>
       ) : (
-        <>
-          <p> User Loading .... </p>
-        </>
+        <p>Loading user data...</p>
       )}
     </div>
   );
